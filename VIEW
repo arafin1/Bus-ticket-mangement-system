@@ -1,0 +1,16 @@
+create view FromDhaka as select name,contact_no,payment_type from passenger_info where bording_point='Dhaka'
+
+create view BusInfo as select bi.seat_id,bi.starting_counter,bi.end_counter,b.seat_available from bus_info bi,bus b where bi.bus_id=b.bus_id;
+
+create view TicketInfo as select bu.seat_available,ro.current_city,ro.destination,tic.ticket_no from ticket tic,route ro,bus bu where tic.route_no=ro.route_no
+
+create view DriverDetails as select d.dname as "Driver Name",bu.route_no,bu.model_no from driver d ,bus bu where d.bus_id=bu.bus_id
+
+create view BusReserved as select bu.bus_id,buin.seat_id from bus bu,bus_info buin where bu.bus_id=buin.bus_id
+
+
+Create view pass1
+
+as
+select passenger_info.name from passenger_info 
+        inner join passenger on passenger.P_ID=Passenger_info.P_ID

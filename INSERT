@@ -1,0 +1,23 @@
+passenger
+
+insert into passenger(p_id) values(50);
+
+passenger_info
+
+insert into passenger_info(contact_no,p_id,name,gender,nationality,email,bording_point,dropping_point,payment_type) values(01600007,50,'sonchay','Male','Bangladeshi','pas1@aiub.com','Dhaka','Chittagong','ATM card');
+
+
+route
+insert into route(route_no,current_city,destination) values(1,'Dhaka','Chittagong');
+
+bus 
+
+insert into bus(bus_id,route_no,seat_available,made_in,model_no) values(1001,1,34,'Japan','X480TY')
+
+driver
+
+insert into driver(d_id,bus_id,dname) values(110110,1001,'Khalid Hassan')
+
+ticket
+insert into ticket(ticket_no,bus_id,p_id,route_no) values(100,1001,50,1)
+

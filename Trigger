@@ -1,0 +1,52 @@
+1.
+
+CREATE or REPLACE TRIGGER trg1
+Before	INSERT OR UPDATE OR DELETE ON ticket
+	
+BEGIN
+	  if to_char(sysdate,'dy') in ('FRI','SAT') and to_char(sysdate,'HH24 MI') not between '8:00 ' and '18:00' then
+        
+         raise_application_error(-20205,'you cannot');  
+      end if;
+end;
+
+2.
+
+CREATE OR REPLACE TRIGGER route_insert_update
+     BEFORE INSERT OR UPDATE ON route
+     FOR EACH ROW
+   DECLARE
+      dup_flag  INTEGER;
+    BEGIN
+         --Force all lower names to uppercase.
+    :NEW.current_city := UPPER(:NEW.current_city);
+    END;
+
+
+3.
+
+create or replace trigger seat_avail
+    BEFORE INSERT OR UPDATE
+    of seat_available
+    on bus
+    for each row
+    declare
+        v_error VARCHAR2(2000);
+    begin
+        if :new.seat_available > 40
+       then
+           v_error:=:old.seat_available||' cannot have that much!';
+           raise_application_error(-20999,v_error);
+       end if;
+
+
+
+
+
+
+
+
+
+
+
+

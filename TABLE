@@ -1,0 +1,79 @@
+********** passenger *************
+
+create table passenger(
+p_id number(10),
+CONSTRAINT passenger_p_id_pk primary key(p_id)
+);
+
+********* passenger_info**************
+
+create table passenger_info(
+contact_no number(10),
+p_id number(10),
+name varchar2(50),
+gender varchar2(10),
+nationality varchar2(20),
+email varchar2(50),
+bording_point varchar2(50),
+dropping_point varchar2(50),
+payment_type varchar2(20),
+CONSTRAINT passenger_info_email_uk UNIQUE(email),
+CONSTRAINT passenger_info_contact_no_pk primary key(contact_no),
+CONSTRAINT passenger_info_p_id_fk foreign key(p_id) REFERENCES passenger(p_id)
+);
+
+****************** route *******************
+
+create table route(
+
+route_no number(10),
+current_city varchar2(20),
+destination varchar2(20),
+CONSTRAINT route_route_no_pk primary key(route_no)
+);
+
+******************* bus **************************
+
+create table bus(
+bus_id number(10),
+route_no number(10),
+seat_available number(30),
+made_in varchar2(20),
+model_no varchar2(15),
+CONSTRAINT bus_bus_id_pk primary key(bus_id),
+CONSTRAINT bus_route_no_fk foreign key(route_no) REFERENCES route(route_no)
+);
+
+******************** bus_info **********************
+
+create table bus_info(
+seat_id number(10),
+bus_id number(10),
+coach_no number(20),
+starting_counter varchar2(20),
+end_counter varchar2(20),
+CONSTRAINT bus_info_seat_id_pk primary key(seat_id),
+CONSTRAINT bus_info_bus_id_fk foreign key(bus_id) REFERENCES bus(bus_id)
+);
+********************** driver **********************
+
+create table driver(
+d_id number(10),
+bus_id number(10),
+dname varchar2(20),
+CONSTRAINT driver_d_id_pk primary key(d_id),
+CONSTRAINT driver_bus_id_fk foreign key(bus_id) REFERENCES bus(bus_id)
+);
+
+*********************** ticket ********************
+
+create table ticket(
+ticket_no number(10),
+bus_id number(10),
+p_id number(10),
+route_no number(10),
+CONSTRAINT ticket_ticket_no_pk primary key(ticket_no),
+CONSTRAINT ticket_bus_id_fk foreign key(bus_id) REFERENCES bus(bus_id),
+CONSTRAINT ticket_p_id_fk foreign key(p_id) REFERENCES passenger(p_id),
+CONSTRAINT ticket_route_no_fk foreign key(route_no) REFERENCES route(route_no)
+);

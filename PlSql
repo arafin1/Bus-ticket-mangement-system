@@ -1,0 +1,154 @@
+1.
+CREATE or REPLACE FUNCTION fun1(no in number) 
+RETURN varchar2
+IS
+    name varchar2(20);
+BEGIN
+    select name into name from passenger_info where p_id = no;
+    return name;
+END;
+caller
+()
+
+
+ DECLARE
+	no number :=:no;
+	name varchar2(20);
+BEGIN
+	name := fun1(no);
+	dbms_output.put_line('Name:'||'   '||name);
+	end;
+
+2.
+
+CREATE OR REPLACE PROCEDURE r_change_s (i_bus_id IN VARCHAR2) AS
+
+    BEGIN
+
+      UPDATE ticket set route_no = '4' WHERE p_id =  i_bus_id;
+
+    END r_change_s
+
+
+
+caller)
+=) call r_change_s('40');
+
+
+
+ 
+3.
+DECLARE
+      v_id number(10):=:BusN;
+       
+
+      v_seat number(10):=:Seat_N;
+
+      v_made varchar2(10):=:Made;
+
+      
+    BEGIN
+      UPDATE BUS
+       SET BUS_ID = v_id
+        WHERE seat_available = v_seat
+        AND MADE_IN=v_made ;
+ 
+     IF SQL%NOTFOUND THEN
+       INSERT INTO BUS (BUS_ID, route_no, seat_available, made_in,model_no)
+         VALUES (v_id,1, v_seat, v_made,'X#DADD');
+     END IF;
+   END;
+
+
+4.
+
+
+
+CREATE OR REPLACE PROCEDURE org_proc
+                    (p_flag_in VARCHAR2,
+                     route_id NUMBER,
+                     cur_id NUMBER,
+                 
+                     des_id VARCHAR2)
+    IS
+     v_error_code NUMBER;
+   BEGIN
+     IF (p_flag_in ='I')THEN
+       BEGIN
+         INSERT INTO route VALUES(route_id,cur_id,des_id);
+      EXCEPTION WHEN OTHERS THEN
+         v_error_code :=SQLCODE;
+         IF v_error_code =-1 THEN
+           RAISE_APPLICATION_ERROR(-20000,'Organization '||TO_CHAR(p_company_id)||' already exists.');
+         ELSIF v_error_code =-2291 THEN
+           RAISE_APPLICATION_ERROR(-20001,'Invalid Hierarchy Code '||TO_CHAR(p_product_id)||' specified.');
+        END IF;
+       END;
+     ELSIF (p_flag_in ='C')THEN
+      BEGIN
+         UPDATE route
+         set current_city =cur_id,
+        destination =des_id
+       WHERE route_no =route_id;
+        IF SQL%NOTFOUND THEN
+           RAISE_APPLICATION_ERROR(-20002,'Organization '||TO_CHAR(p_company_id)||' does not exist.');
+         END IF;
+       END;
+     
+     END IF;
+   END;
+
+
+5.
+CREATE OR REPLACE PROCEDURE AddNewR (
+      p_route  route.route_no%TYPE,
+      p_current   route.current_city%TYPE,
+      p_des      route.destination%TYPE) AS
+    BEGIN
+      INSERT INTO route (route_no, current_city, destination)
+        VALUES (p_route, p_current, p_des);
+ 
+     COMMIT;
+   END AddNewR   
+callig
+DECLARE
+     v_Newroute  route.route_no%TYPE :=:NO;
+      v_current   route.current_city%TYPE :=:city;
+      v_des     route.destination%TYPE :=:des;
+    BEGIN
+      -- Add input to the database.
+      AddNewR(v_Newroute, v_current, v_des);
+    END;
+    
+6.
+
+
+CREATE OR REPLACE TRIGGER pass_trig
+      BEFORE UPDATE OF name
+       ON passenger_info
+       FOR EACH ROW
+    BEGIN
+       DBMS_OUTPUT.PUT_LINE('Name '
+                           ||:OLD.name
+                           ||' has change to '
+                           ||:NEW.name);
+  END;
+
+ procedure
+
+====
+CREATE OR REPLACE PROCEDURE pass_name_upd (
+       i_pass_id IN passenger_info.P_ID%TYPE,
+       i_first_name IN passenger_info.NAME%TYPE)
+    IS
+     BEGIN
+  
+       UPDATE passenger_info a
+       SET a.name = UPPER(i_first_name)
+       WHERE a.p_id = i_pass_id;
+ 
+   EXCEPTION
+      WHEN OTHERS
+      THEN
+         DBMS_OUTPUT.PUT_LINE(sqlerrm);
+   END;
